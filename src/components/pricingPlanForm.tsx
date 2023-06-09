@@ -13,16 +13,19 @@ interface Properties {
 
 function PricingPlanForm(properties: Properties): JSX.Element {
   const { pricingPlanId } = properties;
-  const { addPricingPlan, updatePricingPlan } = usePricingPlanStore();
+  const { addPricingPlan, updatePricingPlan, getPricingPlan } = usePricingPlanStore();
   const navigate = useNavigate();
+
+  const editedPricingPlan = pricingPlanId ? getPricingPlan(pricingPlanId) : undefined;
+
   const [state, setState] = useState<PricingPlan>({
     Id: pricingPlanId ?? "",
-    Quantity: 0,
-    Industry: "",
-    Customer: "",
-    Country: "",
-    Currency: "",
-    activationDate: "",
+    Quantity: editedPricingPlan?.Quantity ?? 0,
+    Industry: editedPricingPlan?.Industry ?? "",
+    Customer: editedPricingPlan?.Customer ?? "",
+    Country: editedPricingPlan?.Country ?? "",
+    Currency: editedPricingPlan?.Currency ?? "",
+    activationDate: editedPricingPlan?.activationDate ?? "",
   });
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -47,7 +50,6 @@ function PricingPlanForm(properties: Properties): JSX.Element {
 
   return (
     <Grid container spacing={2} direction='column' alignContent='center'>
-      {pricingPlanId}
       <Grid item xs={12}>
         <TextField id='activationDate' label='Pick a date' variant='outlined' value={state.activationDate} onChange={handleChange} />
       </Grid>

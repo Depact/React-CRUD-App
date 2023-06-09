@@ -6,27 +6,23 @@ import { useNavigate } from "react-router-dom";
 import usePricingPlanStore from "../store/pricingPlan.store";
 import PricingPlan from "../types/pricingPlan";
 
-const containerStyles = { padding: { xs: 1, md: 2 } };
+const updateButtonStyles = { marginRight: 5 };
 
 function PricingPlanTable(): JSX.Element {
   const navigate = useNavigate();
   const { pricingPlans, removePricingPlan } = usePricingPlanStore();
 
   function updatePricingPlan(pricingPlanId: string) {
-    navigate(`/${pricingPlanId}`);
+    navigate(`/pricingPlan/${pricingPlanId}`);
   }
 
   return (
-    <Grid container sx={containerStyles}>
-      <Grid item xs={12} sm={8} md={6} lg={3}>
-        <TableContainer>
-          <Table>
-            <TableBody>
-              {pricingPlans.map((pricingPlan) => PricingPlanTableRow(pricingPlan, updatePricingPlan, removePricingPlan))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Grid>
+    <Grid container item xs={12} minHeight={50} marginTop={5}>
+      <TableContainer>
+        <Table>
+          <TableBody>{pricingPlans.map((pricingPlan) => PricingPlanTableRow(pricingPlan, updatePricingPlan, removePricingPlan))}</TableBody>
+        </Table>
+      </TableContainer>
     </Grid>
   );
 }
@@ -49,8 +45,8 @@ function PricingPlanTableRow(
       <TableCell>
         {Country} - {Currency} - {activationDate}
       </TableCell>
-      <TableCell>
-        <Button variant='contained' onClick={handleUpdatePricingPlan}>
+      <TableCell align='right'>
+        <Button variant='contained' style={updateButtonStyles} onClick={handleUpdatePricingPlan}>
           Update
         </Button>
         <Button variant='outlined' onClick={handleRemovePricingPlan}>
