@@ -10,7 +10,7 @@ const updateButtonStyles = { marginRight: 5 };
 
 function PricingPlanTable(): JSX.Element {
   const navigate = useNavigate();
-  const { pricingPlans, removePricingPlan } = usePricingPlanStore();
+  const { pricingPlans } = usePricingPlanStore();
 
   function updatePricingPlan(pricingPlanId: string) {
     navigate(`/pricingPlan/${pricingPlanId}`);
@@ -20,18 +20,16 @@ function PricingPlanTable(): JSX.Element {
     <Grid container item xs={12} minHeight={50} marginTop={5}>
       <TableContainer>
         <Table>
-          <TableBody>{pricingPlans.map((pricingPlan) => PricingPlanTableRow(pricingPlan, updatePricingPlan, removePricingPlan))}</TableBody>
+          <TableBody>{pricingPlans.map((pricingPlan) => PricingPlanTableRow(pricingPlan, updatePricingPlan))}</TableBody>
         </Table>
       </TableContainer>
     </Grid>
   );
 }
 
-function PricingPlanTableRow(
-  pricingPlan: PricingPlan,
-  updatePricingPlan: (pricingPlanId: string) => void,
-  removePricingPlan: (pricingPlanId: string) => void
-): JSX.Element {
+function PricingPlanTableRow(pricingPlan: PricingPlan, updatePricingPlan: (pricingPlanId: string) => void): JSX.Element {
+  const { removePricingPlan } = usePricingPlanStore();
+
   const { Id, Country, Currency, activationDate } = pricingPlan;
   const handleUpdatePricingPlan = useCallback(() => {
     updatePricingPlan(Id);

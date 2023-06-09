@@ -18,6 +18,10 @@ function PricingPlanForm(properties: Properties): JSX.Element {
 
   const editedPricingPlan = pricingPlanId ? getPricingPlan(pricingPlanId) : undefined;
 
+  if (pricingPlanId && !editedPricingPlan) {
+    navigate(`/`);
+  }
+
   const [state, setState] = useState<PricingPlan>({
     Id: pricingPlanId ?? "",
     Quantity: editedPricingPlan?.Quantity ?? 0,
@@ -40,8 +44,8 @@ function PricingPlanForm(properties: Properties): JSX.Element {
       updatePricingPlan(state);
     } else {
       addPricingPlan(state);
-      navigate(`/`);
     }
+    navigate(`/`);
   }, [addPricingPlan, navigate, pricingPlanId, state, updatePricingPlan]);
 
   const onExit = useCallback(() => {
