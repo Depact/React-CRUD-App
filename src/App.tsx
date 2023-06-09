@@ -1,8 +1,7 @@
-import React from "react";
-import { Routes, Route, Outlet, Link } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 
-import "./App.css";
-import Home from "./home.component";
+import "./app.css";
+import Home from "./components/home.component";
 import PricingPlanPage from "./components/pricingPlanPage";
 
 function App() {

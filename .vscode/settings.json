@@ -1,0 +1,27 @@
+{
+  "prettier.configPath": ".prettierrc.json",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "cSpell.words": [
+    "childs",
+    "Childs",
+    "dayjs",
+    "echarts",
+    "flowmap",
+    "Flowmap",
+    "flowmaps",
+    "iconify",
+    "Roboto",
+    "svgr",
+    "tanstack",
+    "usehooks",
+    "zustand"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "cSpell.language": "en,fr,de-de,it",
+}

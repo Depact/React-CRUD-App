@@ -1,45 +1,63 @@
-import type React from "react";
+import { useCallback } from "react";
 
-import { Button, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { Button, Grid, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import usePricingPlanStore from "../store/pricingPlan.store";
+import PricingPlan from "../types/pricingPlan";
 
-// const UPDATE_INPUT = (_state: string, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): string =>
-//   (e.target as HTMLInputElement).value;
+const containerStyles = { padding: { xs: 1, md: 2 } };
 
 function PricingPlanTable(): JSX.Element {
-  const { pricingPlans, removePricingPlan } = usePricingPlanStore();
   const navigate = useNavigate();
+  const { pricingPlans, removePricingPlan } = usePricingPlanStore();
 
-  //   const formRef = useRef<HTMLFormElement>(null);
-  //   const [username, setUsername] = useReducer(UPDATE_INPUT, "");
-  //   const [password, setPassword] = useReducer(UPDATE_INPUT, "");
+  function updatePricingPlan(pricingPlanId: string) {
+    navigate(`/${pricingPlanId}`);
+  }
 
   return (
-    <Grid container sx={{ padding: { xs: 1, md: 2 } }}>
-      <Grid item xs={12} sm={8} md={6} lg={3} >
+    <Grid container sx={containerStyles}>
+      <Grid item xs={12} sm={8} md={6} lg={3}>
         <TableContainer>
           <Table>
             <TableBody>
-              {pricingPlans.map((pricingPlan) => (
-                <TableRow key={pricingPlan.Id}>
-                  <TableCell>{pricingPlan.Country} - {pricingPlan.Currency} - {pricingPlan.activationDate}</TableCell>
-                  <TableCell>
-                    <Button variant="contained" onClick={() => {navigate(`/${pricingPlan.Id}`)}}>
-                      Update
-                    </Button>
-                    <Button variant="outlined" onClick={() => removePricingPlan(pricingPlan.Id)}>
-                      Remove
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {pricingPlans.map((pricingPlan) => PricingPlanTableRow(pricingPlan, updatePricingPlan, removePricingPlan))}
             </TableBody>
           </Table>
         </TableContainer>
       </Grid>
     </Grid>
+  );
+}
+
+function PricingPlanTableRow(
+  pricingPlan: PricingPlan,
+  updatePricingPlan: (pricingPlanId: string) => void,
+  removePricingPlan: (pricingPlanId: string) => void
+): JSX.Element {
+  const { Id, Country, Currency, activationDate } = pricingPlan;
+  const handleUpdatePricingPlan = useCallback(() => {
+    updatePricingPlan(Id);
+  }, [Id, updatePricingPlan]);
+  const handleRemovePricingPlan = useCallback(() => {
+    removePricingPlan(Id);
+  }, [Id, removePricingPlan]);
+
+  return (
+    <TableRow key={Id}>
+      <TableCell>
+        {Country} - {Currency} - {activationDate}
+      </TableCell>
+      <TableCell>
+        <Button variant='contained' onClick={handleUpdatePricingPlan}>
+          Update
+        </Button>
+        <Button variant='outlined' onClick={handleRemovePricingPlan}>
+          Remove
+        </Button>
+      </TableCell>
+    </TableRow>
   );
 }
 

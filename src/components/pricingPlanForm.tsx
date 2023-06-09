@@ -1,21 +1,22 @@
 import * as React from "react";
+import { useCallback, useState } from "react";
+
+import { Grid, TextField, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
+import usePricingPlanStore from "../store/pricingPlan.store";
 import PricingPlan from "../types/pricingPlan";
 
-import { ChangeEventHandler, useState } from "react";
-import { FormControl, FormGroup, Grid, TextField } from "@mui/material";
-import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import usePricingPlanStore from "../store/pricingPlan.store";
-
-interface Props {
+interface Properties {
   pricingPlanId: string | undefined;
 }
 
-export const PricingPlanForm: React.FunctionComponent<Props> = (props: Props) => {
-  const { addPricingPlan } = usePricingPlanStore();
+function PricingPlanForm(properties: Properties): JSX.Element {
+  const { pricingPlanId } = properties;
+  const { addPricingPlan, updatePricingPlan } = usePricingPlanStore();
   const navigate = useNavigate();
   const [state, setState] = useState<PricingPlan>({
-    Id: "",
+    Id: pricingPlanId ?? "",
     Quantity: 0,
     Industry: "",
     Customer: "",
@@ -24,67 +25,57 @@ export const PricingPlanForm: React.FunctionComponent<Props> = (props: Props) =>
     activationDate: "",
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setState((prevState) => ({
-      ...prevState,
+  const handleChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setState((previousState) => ({
+      ...previousState,
       [event.target.id]: event.target.value,
     }));
-  };
+  }, []);
 
-  function onSave() {
-    if (props.pricingPlanId) {
-      console.log(state);
+  const onSave = useCallback(() => {
+    if (pricingPlanId) {
+      updatePricingPlan(state);
     } else {
-        addPricingPlan(state)
-        navigate(`/`);
+      addPricingPlan(state);
+      navigate(`/`);
     }
-  }
+  }, [addPricingPlan, navigate, pricingPlanId, state, updatePricingPlan]);
+
+  const onExit = useCallback(() => {
+    navigate(`/`);
+  }, [navigate]);
 
   return (
-    <Grid container spacing={2} direction="column" alignContent="center">
+    <Grid container spacing={2} direction='column' alignContent='center'>
+      {pricingPlanId}
       <Grid item xs={12}>
-        <TextField
-          id="activationDate"
-          label="Pick a date"
-          variant="outlined"
-          value={state.activationDate}
-          onChange={handleChange}
-        />
+        <TextField id='activationDate' label='Pick a date' variant='outlined' value={state.activationDate} onChange={handleChange} />
       </Grid>
       <Grid item xs={12}>
-        <TextField id="Currency" label="Currency" variant="outlined" value={state.Currency} onChange={handleChange} />
+        <TextField id='Currency' label='Currency' variant='outlined' value={state.Currency} onChange={handleChange} />
       </Grid>
       <Grid item xs={12}>
-        <TextField id="Country" label="Country" variant="outlined" value={state.Country} onChange={handleChange} />
+        <TextField id='Country' label='Country' variant='outlined' value={state.Country} onChange={handleChange} />
       </Grid>
       <Grid item xs={12}>
-        <TextField
-          id="Quantity"
-          label="Quantity"
-          variant="outlined"
-          value={state.Quantity.toString()}
-          onChange={handleChange}
-        />
+        <TextField id='Quantity' label='Quantity' variant='outlined' value={state.Quantity.toString()} onChange={handleChange} />
       </Grid>
       <Grid item xs={12}>
-        <TextField id="Customer" label="Customer" variant="outlined" value={state.Customer} onChange={handleChange} />
+        <TextField id='Customer' label='Customer' variant='outlined' value={state.Customer} onChange={handleChange} />
       </Grid>
       <Grid item xs={12}>
-        <TextField id="Industry" label="Industry" variant="outlined" value={state.Industry} onChange={handleChange} />
+        <TextField id='Industry' label='Industry' variant='outlined' value={state.Industry} onChange={handleChange} />
       </Grid>
-      <Grid container item xs={12} justifyContent="space-between">
-        <Button
-          variant="outlined"
-          onClick={() => {
-            navigate(`/`);
-          }}
-        >
+      <Grid container item xs={12} justifyContent='space-between'>
+        <Button variant='outlined' onClick={onExit}>
           Back
         </Button>
-        <Button variant="outlined" onClick={onSave}>
+        <Button variant='outlined' onClick={onSave}>
           Save
         </Button>
       </Grid>
     </Grid>
   );
-};
+}
+
+export default PricingPlanForm;

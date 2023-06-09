@@ -1,24 +1,79 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
-    },
-    "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended"
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "plugins": ["react", "react-hooks", "sonarjs", "jsx-a11y", "unicorn", "@typescript-eslint", "react-perf"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
+    "plugin:react-perf/recommended",
+    "plugin:sonarjs/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:security/recommended",
+    "plugin:unicorn/all",
+    "airbnb",
+    "airbnb/hooks",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "project": ["tsconfig.json"],
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi": ["error", "always"],
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
     ],
-    "overrides": [
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react",
-        "@typescript-eslint"
-    ],
-    "rules": {
-    }
+    "@typescript-eslint/triple-slash-reference": "off",
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "no-console": "warn",
+    "no-debugger": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
+    "import/extensions": "off",
+    "no-use-before-define": "off",
+    "no-shadow": "off",
+    "no-undef": "off",
+    "import/no-unresolved": "off",
+    "no-plusplus": "off",
+    "@typescript-eslint/return-await": "off",
+    "@typescript-eslint/promise-function-async": "off",
+    "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    "import/no-extraneous-dependencies": "off",
+    "unicorn/filename-case": [
+      "error",
+      {
+        "cases": {
+          "camelCase": true
+        }
+      }
+    ]
+  }
 }
