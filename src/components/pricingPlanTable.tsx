@@ -33,12 +33,6 @@ function PricingPlanTableRow(
   removePricingPlan: (pricingPlanId: string) => void
 ): JSX.Element {
   const { Id, Country, Currency, activationDate } = pricingPlan;
-  const handleUpdatePricingPlan = useCallback(() => {
-    updatePricingPlan(Id);
-  }, [Id, updatePricingPlan]);
-  const handleRemovePricingPlan = useCallback(() => {
-    removePricingPlan(Id);
-  }, [Id, removePricingPlan]);
 
   return (
     <TableRow key={Id}>
@@ -46,10 +40,10 @@ function PricingPlanTableRow(
         {Country} - {Currency} - {activationDate}
       </TableCell>
       <TableCell align='right'>
-        <Button variant='contained' style={updateButtonStyles} onClick={handleUpdatePricingPlan}>
+        <Button variant='contained' style={updateButtonStyles} onClick={() => updatePricingPlan(Id)}>
           Update
         </Button>
-        <Button variant='outlined' onClick={handleRemovePricingPlan}>
+        <Button variant='outlined' onClick={() => removePricingPlan(Id)}>
           Remove
         </Button>
       </TableCell>
